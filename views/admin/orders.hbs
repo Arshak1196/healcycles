@@ -1,0 +1,179 @@
+<!-- Blank Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row bg-secondary rounded justify-content-center mx-0" style="min-height: 100vh;">
+        <div class="col-md-12 col-12 bg-light rounded">
+            <h3 class="m-4 text-dark">Orders</h3>
+
+            <table class="table" id="productTable">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-dark">#</th>
+                        <th scope="col" class="text-dark">Orderes Items</th>
+                        <th scope="col" class="text-dark">Delivery Details</th>
+                        <th scope="col" class="text-dark">Total Amount</th>
+                        <th scope="col" class="text-dark">Payment</th>
+                        <th scope="col" class="text-dark">Ordered Date</th>
+                        <th scope="col" class="text-dark">Payment Status</th>
+                        <th scope="col" class="text-dark">Delivery Status</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each orders}}
+                    {{#each products}}
+                    <tr>
+                        <th class="text-dark" scope="row">{{@index}}</th>
+
+                        <td class="text-dark">
+                            <p class=" text-lowercase">{{this.product.name}} x {{this.quantity}}</p>
+                        </td>
+
+                        <td class="text-dark">
+                            <p>{{../deliveryDetails.name}},<br>
+                                {{../deliveryDetails.address1}},
+                                <span id="{{this._id}}{{this.item}}points">
+                                    ...
+                                </span>
+                                <span id="{{this._id}}{{this.item}}moreText" style="display: none;">
+                                    {{../deliveryDetails.address2}},<br>
+                                    {{../deliveryDetails.state}},
+                                    {{../deliveryDetails.country}}<br>
+                                    {{../deliveryDetails.pincode}}<br>
+                                    Mob: {{../deliveryDetails.mobile}}<br>
+                                    Email: {{../deliveryDetails.email}}
+                                </span>
+                            </p>
+                            <a class="text-info" onclick="hideAndShow('{{this._id}}','{{this.item}}')"
+                                id="{{this._id}}{{this.item}}textButton">show
+                                more</a>
+
+                        </td>
+                        <td class="text-dark">₹ {{this.totalPrice}}</td>
+                        <td class="text-dark">{{../this.paymentMethod}}</td>
+                        <td class="text-dark">{{../this.date}}</td>
+                        <td class="text-dark text-capitalize">{{../this.status}}</td>
+                        <td class="text-dark" id="{{../this._id}}{{this.item}}">{{this.orderStatus}}
+
+                            {{#if this.iscanceled}}
+                            {{else}}
+                            <button class="rounded" data-bs-toggle="modal"
+                                data-bs-target="#exampleModalLong{{../this._id}}{{this.item}}"
+                                style="background-color: transparent; border-color: red; ">Change </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModalLong{{../this._id}}{{this.item}}" tabindex="-1"
+                                role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-dark"
+                                                id="exampleModalLongTitle{{../this._id}}{{this.item}}">
+                                                Change Delivery
+                                                Status</h5>
+                                            <button type="button" class="close" data-bs-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="changeDelivery{{../this._id}}{{this.item}}"
+                                                onsubmit="changeDeliveryStatus('{{../this._id}}','{{this.item}}')">
+                                                <select class="form-control" name="deliveryStatus" id="">
+                                                    <option value="{{this.orderStatus}}">{{this.orderStatus}}</option>
+                                                    <option value="Pending">Pending</option>
+                                                    <option value="Shipped">Shipped</option>
+                                                    <option value="Delivered">Delivered</option>
+                                                    <option value="Order Canceled">Confirm cancel</option>
+                                                </select>
+                                                <input type="text" name="orderId" value="{{../this._id}}" hidden>
+                                                <input type="text" name="itemId" value="{{this.item}}" hidden>
+                                                <button type="submit" class="btn btn-success mt-4">Save Changes</button>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            {{/if}}
+
+                        </td>
+
+                    </tr>
+                    {{/each}}
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Blank End -->
+
+
+<!-- Footer Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary rounded-top p-4">
+        <div class="row">
+            <div class="col-12 col-sm-6 text-center text-sm-start">
+                &copy; <a href="#">Your Site Name</a>, All Right Reserved.
+            </div>
+            <div class="col-12 col-sm-6 text-center text-sm-end">
+                <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                <br>Distributed By: <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+</div>
+<!-- Content End -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+
+        $('#productTable').wrap('<div id="hide" style="display:none"/>');
+
+        $('#hide').css('display', 'block');
+    });
+
+
+    var table = $('#productTable').DataTable();
+</script>
+<script>
+    function changeDeliveryStatus(orderId, itemId) {
+        $.ajax({
+            url: '/admin/changeDeliveryStatus',
+            method: 'post',
+            data: $('#changeDelivery' + orderId + itemId).serialize(),
+            success: (response) => {
+                if (response) {
+                    $("#" + orderId + itemId).load(location.href + " #" + orderId + itemId);
+                } else {
+                    alert("failed")
+                }
+            }
+        })
+    }
+    function hideAndShow(odrId, itemId) {
+
+        let points = document.getElementById(odrId + itemId + "points");
+        var showMoreText = document.getElementById(odrId + itemId + "moreText");
+        var buttonText = document.getElementById(odrId + itemId + "textButton");
+        if (points.style.display === "none") {
+            showMoreText.style.display = "none";
+            points.style.display = "inline";
+            buttonText.innerHTML = "show More";
+        }
+        else {
+            showMoreText.style.display = "inline";
+            points.style.display = "none";
+            buttonText.innerHTML = "show Less";
+        }
+    }
+
+</script>

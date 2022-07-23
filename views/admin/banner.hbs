@@ -1,0 +1,152 @@
+<!-- Blank Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row vh-100 bg-secondary rounded justify-content-center mx-0">
+        <div class="col-md-12 bg-light rounded">
+            <h3 class="m-4 text-dark text-center">BANNERS</h3>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-outline-info rounded-pill mb-4" data-bs-toggle="modal"
+                data-bs-target="#exampleModal">
+                Add new Banner
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-dark" id="exampleModalLabel">Add new Banner</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/admin/add_banner" method="post" enctype="multipart/form-data">
+
+                                <label class="text-dark" for="">Heading</label>
+                                <input type="text" name="heading" class="form-control mb-2" required>
+
+                                <label class="text-dark" for="">Sub Heading</label>
+                                <input type="text" name="subHeading" class="form-control mb-2" required>
+
+                                <label class="text-dark" for="">Image</label>
+                                <input type="file" name="image" class="form-control mb-2" required>
+
+                                <button type="submit" class="btn btn-success mt-4 mb-4">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <table class="table" id="usersTable">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-dark">Sl No</th>
+                        <th scope="col" class="text-dark">Heading</th>
+                        <th scope="col" class="text-dark">Sub Heading</th>
+                        <th scope="col" class="text-dark">Image</th>
+                        <th scope="col" class="text-dark">Options</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each banners}}
+                    <tr>
+                        <th class="text-dark" scope="row">{{@index}}</th>
+                        <td class="text-dark">{{this.heading}}</td>
+                        <td class="text-dark">{{this.subHeading}}</td>
+                        <td class="text-dark"><img src="/banners/{{this._id}}.png" alt="" style="width: 80px; height: 50px;"></td>
+                        <td id="{{this._id}}">
+                            {{#if this.active}}
+                            <button class="btn btn-danger" onclick="bannerAction('{{this._id}}','deactive')">Deactivate</button>
+                            {{else}}
+                            <button class="btn btn-info" onclick="bannerAction('{{this._id}}','active')">Activate</button>
+                            {{/if}}
+                            <button class="trash-icon" onclick="deleteBanner('{{this._id}}')" style="background-color: transparent; border: none;"><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Blank End -->
+
+
+<!-- Footer Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary rounded-top p-4">
+        <div class="row">
+            <div class="col-12 col-sm-6 text-center text-sm-start">
+                &copy; <a href="#">Your Site Name</a>, All Right Reserved.
+            </div>
+            <div class="col-12 col-sm-6 text-center text-sm-end">
+                <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                <br>Distributed By: <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+</div>
+<!-- Content End -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+
+        $('#usersTable').wrap('<div id="hide" style="display:none"/>');
+
+        $('#hide').css('display', 'block');
+    });
+
+
+    var table = $('#usersTable').DataTable();
+</script>
+
+<script>
+    function bannerAction(bannerId,action){
+        $.ajax({
+            url:'/admin/bannerAction',
+            method:'post',
+            data:{
+                bannerId,
+                action
+            },
+            success:(response)=>{
+                if(response){
+                    $("#usersTable").load(location.href + " #usersTable");
+                }
+            }
+        })
+    }
+    function deleteBanner(bannerId){
+        Swal.fire({
+            text: "Do you need to remove the product from wishlist",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                        url: '/admin/delete_banner/' + bannerId,
+                        method: 'get',
+                        success: (response) => {
+                            $("#usersTable").load(location.href + " #usersTable");
+                        }
+                    })               
+            }
+        })
+    }
+</script>
+

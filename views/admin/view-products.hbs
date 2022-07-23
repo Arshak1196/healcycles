@@ -1,0 +1,81 @@
+<!-- Blank Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row  bg-secondary rounded justify-content-center mx-0" style="min-height: 100vh;">
+        <div class="col-md-12 bg-light rounded">
+            <h3 class="m-4 text-dark">Products</h3>
+            <a href="/admin/products/view_types" class="btn btn-outline-dark rounded-pill mb-4" role="button"
+                aria-disabled="true">View Types</a><br>
+            <a href="/admin/products/add_product" class="btn btn-outline-info rounded-pill mb-4" role="button"
+                aria-disabled="true">Add product</a>
+
+            <table class="table" id="productTable">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-dark">#</th>
+                        <th scope="col" class="text-dark">Type</th>
+                        <th scope="col" class="text-dark">Category</th>
+                        <th scope="col" class="text-dark">Price</th>
+                        <th scope="col" class="text-dark">Image</th>
+                        <th scope="col" class="text-dark">Options</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each products}}
+                    <tr>
+                        <th class="text-white" scope="row">{{@index}}</th>
+                        <td class="text-white">{{this.name}}</td>
+                        <td class="text-white">{{this.category}}</td>
+                        <td class="text-white">{{this.price}}</td>
+                        <td><img src="/product-images/{{this._id}}0.jpg" style="width: 50px; height: 50px;"></td>
+                        <td>
+                            <a href="/admin/products/edit_product/{{this._id}}" class="btn btn-warning">Edit</a>
+                            <a href="/admin/products/delete_product/{{this._id}}" class="btn btn-danger"
+                                onclick="return confirm('Are you sure to delete {{this.name}}?')">Delete</a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Blank End -->
+
+
+<!-- Footer Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary rounded-top p-4">
+        <div class="row">
+            <div class="col-12 col-sm-6 text-center text-sm-start">
+                &copy; <a href="#">Your Site Name</a>, All Right Reserved.
+            </div>
+            <div class="col-12 col-sm-6 text-center text-sm-end">
+                <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                <br>Distributed By: <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+</div>
+<!-- Content End -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+
+        $('#productTable').wrap('<div id="hide" style="display:none"/>');
+
+        $('#hide').css('display', 'block');
+    });
+
+
+    var table = $('#productTable').DataTable();
+</script>

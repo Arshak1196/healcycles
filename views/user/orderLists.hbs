@@ -1,0 +1,133 @@
+<div class="bg-light py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mb-0"><a href="/">Home</a> <span class="mx-2 mb-0">/</span> <strong
+                    class="text-black">Orders</strong></div>
+        </div>
+    </div>
+</div>
+
+<div class="site-section">
+    <div class="container">
+        <div class="row mb-5">
+            <form class="col-md-12" method="post">
+                <div class="site-blocks-table">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="">Order Id & Date</th>
+                                <th class="">Product</th>
+                                <th class="product-price">Amount</th>
+                                <th class="product-name">Delivery Address</th>
+                                <th class="product-quantity">Payment & Status</th>
+                                <th class="product-total">Delivery</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each orders}}
+                            {{#each products}}
+                            <tr>
+                                <td class="">
+                                    <p style="font-weight:bold;">{{../this._id}}</p>
+                                    <p>{{../this.date}}</p>
+
+                                </td>
+                                <td class="product-name">
+
+                                    <p class=" text-black"><a
+                                            href="/shop/product/{{this.product._id}}">{{this.product.name}} x
+                                            {{this.quantity}}</a>
+                                    </p>
+
+                                </td>
+                                <td>₹ {{this.totalPrice}}.00</td>
+                                <td>
+                                    <p>
+                                        {{../deliveryDetails.name}},<br>
+                                        {{../deliveryDetails.address1}}
+                                        <span id="{{this._id}}{{this.item}}points">
+                                            ...
+                                        </span>
+                                        <span id="{{this._id}}{{this.item}}moreText" style="display: none;">
+                                            {{../deliveryDetails.address2}},<br>
+                                            {{../deliveryDetails.state}},
+                                            {{../deliveryDetails.country}}<br>
+                                            {{../deliveryDetails.pincode}}<br>
+                                            Mob:{{../deliveryDetails.mobile}}
+                                            Email:{{../deliveryDetails.email}}
+                                        </span>
+                                    </p>
+                                    <a class="text-info" onclick="hideAndShow('{{this._id}}','{{this.item}}')"
+                                        id="{{this._id}}{{this.item}}textButton">show more</a>
+
+                                </td>
+                                <td class="text-capitalize">{{../this.paymentMethod}} : {{../this.status}} </td>
+                                <td>{{this.orderStatus}}
+                                    {{#if this.iscanceled}}
+                                    {{else}}
+                                    <button type="button" onclick="cancelOrder('{{../this._id}}','{{this.item}}')"
+                                        class="btn-sm btn-outline-danger ">Cancel Order</button>
+                                    {{/if}}
+                                </td>
+
+
+                            </tr>
+                            {{/each}}
+                            {{/each}}
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+</div>
+
+<script>
+
+
+    function hideAndShow(odrId, itemId) {
+
+        let points = document.getElementById(odrId + itemId + "points");
+        var showMoreText = document.getElementById(odrId + itemId + "moreText");
+        var buttonText = document.getElementById(odrId + itemId + "textButton");
+        if (points.style.display === "none") {
+            showMoreText.style.display = "none";
+            points.style.display = "inline";
+            buttonText.innerHTML = "show More";
+        }
+        else {
+            showMoreText.style.display = "inline";
+            points.style.display = "none";
+            buttonText.innerHTML = "show Less";
+        }
+    }
+
+    function cancelOrder(odrId, itemId) {
+        Swal.fire({
+            text: "Are you sure?",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Cancel Order'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/cancel_order/' + odrId + '/' + itemId,
+                    method: 'get',
+                    success: (response) => {
+                        alert('order canceled')
+                        location.reload()
+                    }
+                })
+            }
+        })
+
+
+    }
+</script>

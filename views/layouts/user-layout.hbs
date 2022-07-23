@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Heal Cycles &mdash; Complete Cycle Solutions</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  {{!-- Sweet Alert--}}
+  {{!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> --}}
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  {{!-- Razorpay --}}
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  {{!-- Image zoom --}}
+  <script src="https://unpkg.com/js-image-zoom@0.4.1/js-image-zoom.js" type="application/javascript"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/user/fonts/icomoon/style.css">
+  <link rel="stylesheet" href="/user/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/user/css/magnific-popup.css">
+  <link rel="stylesheet" href="/user/css/jquery-ui.css">
+  <link rel="stylesheet" href="/user/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="/user/css/owl.theme.default.min.css">
+
+  <link rel="stylesheet" href="/user/css/aos.css">
+
+  <link rel="stylesheet" href="/user/css/style.css">
+
+</head>
+
+<body>
+  {{#if users}}
+  {{else}}
+  {{>user-header}}
+  {{/if}}
+
+  {{{body}}}
+
+  {{#if userss}}
+  {{else}}
+  {{>user-footer}}
+  {{/if}}
+
+  <script src="/user/js/script.js"></script>
+  <script src="/user/js/jquery-3.3.1.min.js"></script>
+  <script src="/user/js/jquery-ui.js"></script>
+  <script src="/user/js/popper.min.js"></script>
+  <script src="/user/js/bootstrap.min.js"></script>
+  <script src="/user/js/owl.carousel.min.js"></script>
+  <script src="/user/js/jquery.magnific-popup.min.js"></script>
+  <script src="/user/js/aos.js"></script>
+
+  <script src="/user/js/main.js"></script>
+
+</body>
+
+</html>

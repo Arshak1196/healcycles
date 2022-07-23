@@ -1,0 +1,62 @@
+<div class="bg-light py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mb-0"><a href="/">Home</a> <span class="mx-2 mb-0"></span> <span
+                    class="mx-2 mb-0">/</span> <strong class="text-black">Account</strong></div>
+        </div>
+    </div>
+</div>
+<h2 class="text-center my-5">Your Account</h2>
+<section class="container my-5 row  " style="min-height: 50vh;">
+
+    <div class="container mt-5 col-md-6">
+        <img src="https://www.pngmart.com/files/10/Business-User-Account-PNG-Image.png"
+            style="width: 25vh; height: 25vh;" class="rounded mx-auto d-block">
+    </div>
+
+    <div class="mt-5 ">
+        <form method="post" action="/edit-account" id="edit-profile">
+            <div class="form-group row">
+                <label for="name" class="col-4 col-form-label">Name</label>
+                <div class="col-8">
+                    <input id="fname" name="name" value="{{userDetails.name}}" placeholder="Name"
+                        class="form-control here" type="text" disabled>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="email" class="col-4 col-form-label">Mobile</label>
+                <div class="col-8">
+                    <input id="mobilenumber" name="phone" value="{{userDetails.phone}}" placeholder="Mobile"
+                        class="form-control" required="required" onkeypress="return isNumber(event)" maxlength="10"
+                        type="tel" disabled>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="email" class="col-4 col-form-label">Email</label>
+                <div class="col-8">
+                    <input id="email" name="email" value="{{userDetails.email}}" placeholder="Email"
+                        class="form-control here" required="required" type="text" disabled>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="offset-4 col-8">
+                    <a onclick="editProfile('{{userDetails._id}}')" style=" " type="" id="submit"
+                        class="btn btn-warning">Edit
+                        Profile</a>
+
+                    <button type="submit" class="btn  kms" id="btn" style="display: none;">Update</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    function editProfile(userId) {
+        document.getElementById('fname').disabled = false
+        document.getElementById('mobilenumber').disabled = false
+        document.getElementById('email').disabled = false
+        document.getElementById('submit').style.display = "none"
+        document.getElementById('btn').style.display = "block"
+    }
+</script>

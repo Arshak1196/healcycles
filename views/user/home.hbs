@@ -1,0 +1,98 @@
+<div class="site-wrap">
+
+
+  
+  <div class="site-blocks-cover" data-aos="fade">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 ml-auto order-md-2 align-self-start">
+          <div class="site-block-cover-content">
+            <h2 class="sub-title">{{banner.subHeading}}</h2>
+            <h1>{{banner.heading}}</h1>
+            <p><a href="/shopAll" class="btn btn-black rounded-0">Shop Now</a></p>
+          </div>
+        </div>
+        <div class="col-md-6 order-1 align-self-end">
+          <img src="/banners/{{banner._id}}.png" alt="Image" class="img-fluid mb-5">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="site-section">
+    <div class="container">
+      <div class="title-section mb-5">
+        <h2 class="text-uppercase"><span class="d-block">Discover</span> The Categories</h2>
+      </div>
+      <div class="row align-items-stretch">
+        <div class="col-lg-8">
+          <div class="product-item sm-height full-height bg-gray">
+            <a href="/shop/BIKES" class="product-category">Bikes <span>25 items</span></a>
+            <img src="https://pngimg.com/uploads/cycling/cycling_PNG9.png" alt="Image" class="img-fluid">
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="product-item sm-height bg-gray mb-4">
+            <a href="/shop/APPARELS" class="product-category">Apparels <span>25 items</span></a>
+            <img src="https://images.squarespace-cdn.com/content/v1/5767b637ebbd1a42a8a9574e/1518508096929-N9MZ4MV5TEB3Q8LLFQIX/22299_B_1_Circuit_LTD_Jersey.png?format=1000w" alt="Image" class="img-fluid">
+          </div>
+
+          <div class="product-item sm-height bg-gray">
+            <a href="/shop/ACCESSORIES" class="product-category">Accessories <span>25 items</span></a>
+            <img src="https://www.abus.com/var/StorageStatic/assets/Mobile%20Sicherheit/Helme/Road/StormChaser/Kat2021/4003318677304_StormChaser_zigzag%20blue_rear_abus_640.png" alt="Image" class="img-fluid">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="site-section">
+    <div class="container">
+      <div class="row">
+        <div class="title-section mb-5 col-12">
+          <h2 class="text-uppercase">Latest Collection</h2>
+        </div>
+      </div>
+      <div class="row">
+        {{#each products}}
+        <div class="col-lg-4 col-md-6 item-entry mb-4 ">
+          <a href="/shop/product/{{this._id}}" class="product-item md-height d-block">
+            <img src="/product-images/{{this._id}}0.jpg" alt="Image" class="img-fluid">
+          </a>
+          <h2 class="item-title"><a href="/shop/product/{{this._id}}">{{this.name}}</a></h2>
+          <strong class="item-price">₹ {{this.price}}</strong>
+        </div>
+        {{/each}}
+
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="site-section">
+    <div class="container">
+      <div class="row">
+        <div class="title-section text-center mb-5 col-12">
+          <h2 class="text-uppercase">POPULAR PRODUCTS</h2>
+        </div>
+      </div>
+      <div class="row">
+        {{#each popular}}
+        <div class="col-lg-4 col-md-6 item-entry mb-4 ">
+          <a href="/shop/product/{{this._id}}" class="product-item md-height d-block">
+            <img src="/product-images/{{this._id}}0.jpg" alt="Image" class="img-fluid">
+          </a>
+          <h2 class="item-title"><a href="/shop/product/{{this._id}}">{{this.name}}</a></h2>
+          <strong class="item-price">₹ {{this.price}}</strong>
+        </div>
+        {{/each}}
+
+
+      </div>
+    </div>
+  </div>
+
+  

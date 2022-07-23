@@ -1,0 +1,305 @@
+<div class="bg-light py-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 mb-0"><a href="/">Home</a> <span class="mx-2 mb-0">/</span> <a href="/cart">Cart</a> <span
+          class="mx-2 mb-0">/</span> <strong class="text-black">Checkout</strong></div>
+    </div>
+  </div>
+</div>
+
+<div class="site-section">
+  <div class="container">
+
+
+    <div class="row">
+      <div class="col-md-6 mb-5 mb-md-0">
+        <h3>Saved Address</h3>
+        <div class="row" id="addressLists">
+          {{#each address}}
+          <div class="col-md-4 alert border-warning mr-2 card " style="cursor: pointer;">
+            <div class="col-md-12">
+              <h6 class="text-black">{{this.fname}} </h6>
+              <p class="">{{this.address1}}<br> ph: {{this.phone}}</p>
+              <div class="ml-auto">
+                <button class="btn btn-secondary " style="width: fit-content;"
+                  onclick="autoFill('{{this.fname}}','{{this.lname}}','{{this.address1}}','{{this.address2}}','{{this.state}}','{{this.country}}','{{this.pin_code}}','{{this.phone}}','{{this.email}}')">
+                  Choose
+                </button>
+                <button class="ml-2 rounded" onclick="deleteAddress('{{this._id}}')"><i
+                    class="fa fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+        <div>
+          <a href="/add_address" class="btn btn-success">Add new address </a>
+        </div>
+        <form id="checkOutForm">
+          <h2 class="h3 mb-3 text-black mt-5">Billing Details</h2>
+          <div class="p-3 p-lg-5 border">
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label for="c_fname" class="text-black">First Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="first" name="fname">
+              </div>
+              <div class="col-md-6">
+                <label for="c_lname" class="text-black">Last Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="last" name="lname">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-md-12">
+                <label for="c_address" class="text-black">Address <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="add1" name="address1" placeholder="Street address">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <input type="text" class="form-control" id="add2" name="address2"
+                placeholder="Apartment, suite, unit etc. (optional)">
+            </div>
+
+            <div class="form-group row">
+              <div class="col-md-6">
+                <label for="state_country" class="text-black">State<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="ste" name="state">
+              </div>
+              <div class="col-md-6">
+                <label for="state_country" class="text-black">Country <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="country" name="country">
+              </div>
+              <div class="col-md-6">
+                <label for="c_postal_zip" class="text-black">Pin Code<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="pin" name="pin_code">
+              </div>
+            </div>
+
+            <div class="form-group row mb-5">
+              <div class="col-md-6">
+                <label for="c_email_address" class="text-black">Email Address <span class="text-danger">*</span></label>
+                <input type="email" class="form-control" id="mail" name="email">
+              </div>
+              <div class="col-md-6">
+                <label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="phone" name="phone" placeholder="Phone Number">
+              </div>
+            </div>
+            <input type="text" name="usrId" value="{{user._id}}" hidden>
+
+            <div class="form-group">
+              <label for="c_order_notes" class="text-black">Order Notes</label>
+              <textarea name="order_notes" id="c_order_notes" cols="30" rows="5" class="form-control"
+                placeholder="Write your notes here..."></textarea>
+            </div>
+
+          </div>
+      </div>
+      <div class="col-md-6">
+
+        <div class="row mb-5">
+          <div class="col-md-12">
+            <h2 class="h3 mb-3 text-black">Coupon Code</h2>
+            <div class="p-3 p-lg-5 border">
+
+              <label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
+              <div class="input-group w-75">
+                <input type="text" class="form-control" id="c_code" placeholder="Coupon Code" aria-label="Coupon Code"
+                  aria-describedby="button-addon2">
+                <div class="input-group-append">
+                  <button class="btn btn-primary btn-sm px-4" type="button" id="button-addon2">Apply</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-5">
+          <div class="col-md-12">
+            <h2 class="h3 mb-3 text-black">Your Order</h2>
+            <div class="p-3 p-lg-5 border">
+              <table class="table site-block-order-table mb-5">
+                <thead>
+                  <th>Product</th>
+                  <th>Total</th>
+                </thead>
+                <tbody>
+                  {{#each products}}
+                  <tr>
+                    <td>{{this.product.name}} <strong class="mx-2">x</strong> {{this.quantity}}</td>
+                    <td class="text-right">₹ {{this.totalPrice}}</td>
+                  </tr>
+                  {{/each}}
+                  <tr>
+                    <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
+                    <td class="text-black font-weight-bold text-right"><strong>₹{{total}}</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              {{!-- <div class="border p-3 mb-3">
+                <h3 class="h6 mb-0"><a class="d-block" data-toggle="collapse" href="#collapsebank" role="button"
+                    aria-expanded="false" aria-controls="collapsebank">Direct Bank Transfer</a></h3>
+
+                <div class="collapse" id="collapsebank">
+                  <div class="py-2">
+                    <p class="mb-0">Make your payment directly into our bank account. Please use your Order ID as the
+                      payment reference. Your order won’t be shipped until the funds have cleared in our account.</p>
+                  </div>
+                </div>
+              </div> --}}
+
+              <div class="border p-3 mb-3">
+                <input type="radio" class="h6 mb-0" name="payment" value="COD" required>
+                <label for="COD" class="h6 mb-0 text-danger align-middle ml-2">COD</label>
+              </div>
+
+              <div class="border p-3 mb-3">
+                <input type="radio" class="h6 mb-0" name="payment" value="RAZORPAY" required>
+                <label for="RAZORPAY" class="h6 mb-0 text-danger align-middle ml-2">RAZORPAY</label>
+              </div>
+
+              <div class="form-group">
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Place
+                  Order</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function autoFill(fname, lname, address1, address2, state, country, pincode, mobile, email) {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    })
+    Toast.fire({
+      icon: 'success',
+      title: 'Address selected'
+    })
+    document.getElementById('first').value = fname
+    document.getElementById('last').value = lname
+    document.getElementById('add1').value = address1
+    document.getElementById('add2').value = address2
+    document.getElementById('ste').value = state
+    document.getElementById('country').value = country
+    document.getElementById('pin').value = pincode
+    document.getElementById('phone').value = mobile
+    document.getElementById('mail').value = email
+  }
+
+
+  function deleteAddress(addressId) {
+    Swal.fire({
+      text: "Do you need to remove the product from wishlist",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: '/delete_address/' + addressId,
+          method: 'get',
+          success: (response) => {
+            if (response) {
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'bottom-end',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+              })
+              Toast.fire({
+                icon: 'success',
+                title: 'Address deleted'
+              })
+              $('#addressLists').load(location.href + " #addressLists")
+            }
+          }
+        })
+      }
+    })
+  }
+
+  $('#checkOutForm').submit((e) => {
+    e.preventDefault()
+    $.ajax({
+      url: '/placeOrder',
+      method: 'post',
+      data: $('#checkOutForm').serialize(),
+      success: (response) => {
+        if (response.codSuccess) {
+          location.href = '/order_success'
+        } else {
+          razorpayPayment(response)
+        }
+      }
+    })
+  })
+
+  function razorpayPayment(order) {
+    var options = {
+      "key": "rzp_test_CT1x7xBwQiVoXc",
+      "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      "currency": "INR",
+      "name": "Heal Cycles",
+      "description": "Test Transaction",
+      "image": "https://example.com/your_logo",
+      "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      "handler": function (response) {
+
+        verifyPayment(response, order)
+      },
+      "prefill": {
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9999999999"
+      },
+      "notes": {
+        "address": "Razorpay Corporate Office"
+      },
+      "theme": {
+        "color": "#3399cc"
+      }
+    }
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+  }
+
+  function verifyPayment(payment, order) {
+    $.ajax({
+      url: '/verify-payment',
+      data: {
+        payment,
+        order
+      },
+      method: 'post',
+      success: (response) => {
+        if (response.status) {
+          location.href = '/order_success'
+        } else {
+          alert("Payment Failed")
+        }
+      }
+    })
+  }
+</script>

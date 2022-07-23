@@ -1,0 +1,89 @@
+<div class="site-navbar bg-white py-2 shadow">
+
+  <div class="search-wrap">
+    <div class="container">
+      <a href="#" class="search-close js-search-close"><span class="icon-close2"></span></a>
+      <form action="/search-products" method="post">
+        <input type="text" name="key" class="form-control" id="searchKey" onclick="" placeholder="Search keyword and hit enter...">
+      </form>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="logo">
+        <div class="site-logo">
+          <a href="/" class="js-logo-clone">Heal Cycles</a>
+        </div>
+      </div>
+      <div class="main-nav d-none d-lg-block">
+        <nav class="site-navigation text-right text-md-center" role="navigation">
+          <ul class="site-menu js-clone-nav d-none d-lg-block">
+            <li class="has-children">
+              <a href="/shopAll">SHOP</a>
+              <ul class="dropdown">
+                <li><a href="/shop/BIKES">BIKES</a></li>
+                <li><a href="/shop/APPARELS">APPARELS</a></li>
+                <li><a href="/shop/ACCESSORIES">ACCESSORIES</a></li>
+              </ul>
+            </li>
+
+
+            {{!-- <li><a href="#">Catalogue</a></li>
+            <li><a href="#">New Arrivals</a></li> --}}
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="icons">
+
+        <a href="#" class="icons-btn d-inline-block js-search-open"><span class="icon-search"></span></a>
+        {{#if user}}
+        <a href="/wishlist" class="icons-btn d-inline-block bag">
+          <span class="icon-heart-o"></span>
+          <span class="number">{{count.wishlistCount}}</span>
+        </a>
+        <a href="/cart" id="myCart" class="icons-btn d-inline-block bag">
+          <span class="icon-shopping-bag"></span>
+          <span class="number" id="cart-count">{{count.cartCount}}</span>
+        </a>
+        <div class="dropdown icons-btn d-inline-block">
+          <a class="" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span
+              class="icon-user"></span></a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Hello {{user.name}}</a>
+            <a class="dropdown-item" href="/account">Account</a>
+            <a class="dropdown-item" href="/order_lists">Orders</a>
+            <a class="dropdown-item" href="/logout">Log out</a>
+          </div>
+        </div>
+
+        <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none"><span
+            class="icon-menu"></span></a>
+        {{else}}
+        <a href="#" class="icons-btn d-inline-block bag">
+          <span class="icon-heart-o"></span>
+          <span class="number">0</span>
+        </a>
+        <a href="/cart" class="icons-btn d-inline-block bag">
+          <span class="icon-shopping-bag"></span>
+          <span class="number">0</span>
+        </a>
+        <div class="dropdown icons-btn d-inline-block">
+          <a class="" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span
+              class="icon-user"></span></a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="/login">LOGIN</a>
+            <a class="dropdown-item" href="signup">SIGN UP</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </div>
+
+        <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none"><span
+            class="icon-menu"></span></a>
+        {{/if}}
+
+      </div>
+    </div>
+  </div>
+</div>

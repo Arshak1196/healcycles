@@ -1,0 +1,31 @@
+
+<section class="mt-5" style="min-height:60vh ;">
+    <div class="container d-flex justify-content-center align-items-center py-5">
+        <div class="position-relative">
+            <div class="card p-2 text-center" style="border-color:black;">
+                <h6 class="text-dark">Please enter the one time password <br /> to verify your account</h6>
+                <div>
+                    <span>A code has been sent to</span>
+                    <small></small>
+                </div>
+                <form action="/otp" method="post">
+                    <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
+                        <input class="m-2 text-center form-control rounded " type="text" id="first" name="otp"
+                            maxlength="6" style="width:120px;">
+                    </div>
+
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-info px-4 validate">Verify</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-2">
+                <div class="content d-flex justify-content-center align-items-center">
+                    <span>Didn't get the code</span>
+                    <a href="#" class="text-decoration-none ms-3">Resend(1/3)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

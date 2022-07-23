@@ -1,0 +1,158 @@
+<div class="bg-light py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mb-0"><a href="/">Home</a> <span class="mx-2 mb-0">/</span> <strong
+                    class="text-black">Cart</strong></div>
+        </div>
+    </div>
+</div>
+
+<div class="site-section">
+    <div class="container">
+        <div class="row mb-5">
+            <form class="col-md-12" method="post">
+                <div class="site-blocks-table">
+                    {{#if count.cartCount}}
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="product-thumbnail">Image</th>
+                                <th class="product-name">Product</th>
+                                <th class="product-price">Price</th>
+                                <th class="product-quantity">Quantity</th>
+                                <th class="product-total">Total</th>
+                                <th class="product-remove">Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each products}}
+                            <tr>
+                                <td class="product-thumbnail">
+                                    <img src="/product-images/{{this.product._id}}0.jpg" alt="Image" class="img-fluid">
+                                </td>
+                                <td class="product-name">
+                                    <h2 class="h5 text-black" >{{this.product.name}}</h2>
+                                </td>
+                                <td id="prdtPrice">₹ {{this.product.price}}</td>
+                                <td>
+                                    <div class="input-group mb-3 d-flex flex-align-center" style="max-width: 120px;">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-outline-primary" type="button"
+                                                onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}','{{this.product.price}}','{{this.product.stock}}',-1)">-</button>
+                                        </div>
+                                        <span id="{{this.product._id}}" class=" py-2 px-2"
+                                            style="border-color: silver; border-radius: 0;">{{this.quantity}}</span>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-primary" type="button"
+                                                onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}','{{this.product.price}}','{{this.product.stock}}',1)">+</button>
+                                        </div>
+                                    </div>
+
+                                </td>
+                                <td><span id="0{{this.product._id}}">{{this.totalPrice}}</span></td>
+                                <td><button type="button"
+                                        onclick="deleteCartProduct('{{this._id}}','{{this.product._id}}')"
+                                        class="btn btn-primary height-auto btn-sm">X</button></td>
+
+                            </tr>
+                            {{/each}}
+
+                        </tbody>
+                    </table>
+                    {{else}}
+                    <div class="d-flex align-items-center flex-column" style="margin: auto;">
+                        <img src="https://i.pinimg.com/originals/2e/ac/fa/2eacfa305d7715bdcd86bb4956209038.png" alt="">
+                        <div class="col-md-6">
+                            <a class="btn btn-outline-primary btn-sm btn-block pt-3" href="/shopAll">Continue
+                                    Shopping</a>
+                        </div>
+                    </div>
+                    {{/if}}
+
+                </div>
+            </form>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                
+               
+            </div>
+            <div class="col-md-6 pl-5">
+                <div class="row justify-content-end">
+                    <div class="col-md-7">
+                        <div class="row">
+                            <div class="col-md-12 text-right border-bottom mb-5">
+                                <h3 class="text-black h4 text-uppercase">Cart Totals</h3>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-5">
+                            <div class="col-md-6">
+                                <span class="text-black">Total Amount</span>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <strong class="text-black">₹ <span id="total">{{totalValue}}</span></strong>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn btn-primary btn-lg btn-block"><a class="text-white"
+                                        href="/cart/checkout">Proceed To Checkout</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function changeQuantity(cartId, prdtId, usrId,price,stock, count) {
+        let quantity = parseInt(document.getElementById(prdtId).innerHTML)
+        count = parseInt(count)
+        price = parseFloat(price)
+        stock = parseInt(stock)
+        console.log(quantity+""+count+""+stock)
+        if((quantity+count)<=stock){
+            $.ajax({
+            url: '/change-product-quantity',
+            data: {
+                cart: cartId,
+                product: prdtId,
+                user: usrId,
+                count: count,
+                quantity: quantity
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    document.getElementById(prdtId).innerHTML = quantity + count
+                    document.getElementById('total').innerHTML = response.total
+                    document.getElementById(0+prdtId).innerHTML=(quantity+count)*price
+                }
+            }
+        })
+        }else{
+            alert("No more Stock")
+        }
+    }
+    function deleteCartProduct(cartId, prdtId) {
+        $.ajax({
+            url: '/delete-cart-item',
+            data: {
+                cart: cartId,
+                product: prdtId
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    alert("Product Removed from the cart")
+                    location.reload()
+                }
+            }
+        })
+    }
+</script>

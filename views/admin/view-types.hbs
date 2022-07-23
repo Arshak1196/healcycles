@@ -1,0 +1,101 @@
+<!-- Blank Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row vh-100 bg-secondary rounded justify-content-center mx-0">
+        <div class="col-md-6 bg-light rounded">
+            <h3 class="m-4 text-dark">Bike Types</h3>
+            <button type="button" class="btn btn-outline-dark rounded-pill mb-4" data-bs-toggle="modal"
+                data-bs-target="#exampleModal">Add Bike Types</button>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-dark" id="exampleModalLabel">Add Bike Types</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/admin/products/add_types" method="post">
+                            <input type="text" name="types" id="" class="form-control" required>
+                            <button type="submit" class="btn btn-success my-4">Add Type</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <table class="table" id="typesTable">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-dark">#</th>
+                        <th scope="col" class="text-dark">Name</th>
+                        <th scope="col" class="text-dark">Options</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each bikeTypes}}
+                    {{#each types}}
+                    <tr>
+                        <th class="text-white" scope="row">{{@index}}</th>
+                        <td class="text-white">{{this}}</td>
+                        <td>
+                            <a href="/admin/products/edit_product/{{@index}}" class="btn btn-warning">Edit</a>
+                            <a href="/admin/products/delete_subcat/{{this}}" class="btn btn-danger"
+                                onclick="return confirm('Are you sure to delete {{this.name}}?')">Delete</a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Blank End -->
+
+
+<!-- Footer Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary rounded-top p-4">
+        <div class="row">
+            <div class="col-12 col-sm-6 text-center text-sm-start">
+                &copy; <a href="#">Your Site Name</a>, All Right Reserved.
+            </div>
+            <div class="col-12 col-sm-6 text-center text-sm-end">
+                <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                <br>Distributed By: <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+</div>
+<!-- Content End -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+
+<script>
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+    })
+</script>
+<script>
+    $(document).ready(function () {
+
+
+        $('#typesTable').wrap('<div id="hide" style="display:none"/>');
+
+        $('#hide').css('display', 'block');
+    });
+
+
+    var table = $('#typesTable').DataTable();
+</script>
