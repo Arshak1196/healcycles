@@ -5,33 +5,42 @@ const objectid = require('mongodb').ObjectId
 module.exports = {
     addBikeTypes: (type) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collection.ADMIN_COLLECTION).updateOne( {},{ $push: { types: type } }).then((data) => {
+            db.get().collection(collection.ADMIN_COLLECTION).updateOne({}, { $push: { types: type } }).then((data) => {
                 resolve(data.insertedId)
+            }).catch((error) => {
+                reject(error)
             })
         })
-
     },
     getAllBikeTypes: () => {
         return new Promise(async (resolve, reject) => {
-            let bikeTypes = await db.get().collection(collection.ADMIN_COLLECTION).find().toArray()
-            resolve(bikeTypes)
+            try {
+                let bikeTypes = await db.get().collection(collection.ADMIN_COLLECTION).find().toArray()
+                resolve(bikeTypes)
+            } catch (error) {
+                reject(error)
+            }
         })
     },
     // editBikeTypes:(index)=>{
     //     return new Promise(async(resolve,reject)=>{
-    //         db.get().collection(collection.ADMIN_COLLECTION).updateOne({_id:5555},{$set:{[types.index]:}}).then((data)=>{
-    //             resolve()
-    //         })
+    //         try {
+    //             db.get().collection(collection.ADMIN_COLLECTION).updateOne({},{$set:{[types.index]:}}).then((data)=>{
+    //                 resolve()
+    //             })
+    //         } catch (error) {
+    //             reject(error)
+    //         }
     //     })
-
     // },
     deleteBikeTypes: (name) => {
         return new Promise(async (resolve, reject) => {
-            db.get().collection(collection.ADMIN_COLLECTION).updateOne({},{ $pull: { types: name } }).then((data) => {
+            db.get().collection(collection.ADMIN_COLLECTION).updateOne({}, { $pull: { types: name } }).then((data) => {
                 resolve()
+            }).catch((error) => {
+                reject(error)
             })
         })
-
     },
     addProduct: (product, callback) => {
         product.price = +product.price;
@@ -42,30 +51,42 @@ module.exports = {
     },
     getAllProducts: () => {
         return new Promise(async (resolve, reject) => {
-            let products = await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray()
-            resolve(products)
+            try {
+                let products = await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray()
+                resolve(products)
+            } catch (error) {
+                reject(error)
+            }
         })
     },
     searchProducts: (key) => {
         return new Promise(async (resolve, reject) => {
-            let products = await db.get().collection(collection.PRODUCT_COLLECTION)
-                .find({
-                    "$or": [
-                        {
-                            name: { $regex: key, $options: 'i' }
-                        },
-                        {
-                            category: { $regex: key, $options: 'i' }
-                        }
-                    ]
-                }).toArray()
-            resolve(products)
+            try {
+                let products = await db.get().collection(collection.PRODUCT_COLLECTION)
+                    .find({
+                        "$or": [
+                            {
+                                name: { $regex: key, $options: 'i' }
+                            },
+                            {
+                                category: { $regex: key, $options: 'i' }
+                            }
+                        ]
+                    }).toArray()
+                resolve(products)
+            } catch (error) {
+                reject(error)
+            }
         })
     },
     getLatestProducts: () => {
         return new Promise(async (resolve, reject) => {
-            let products = await db.get().collection(collection.PRODUCT_COLLECTION).find().sort({ _id: -1 }).limit(3).toArray()
-            resolve(products)
+            try {
+                let products = await db.get().collection(collection.PRODUCT_COLLECTION).find().sort({ _id: -1 }).limit(3).toArray()
+                resolve(products)
+            } catch (error) {
+                reject(error)
+            }
         })
     },
     getPopularProducts: () => {
@@ -96,12 +117,16 @@ module.exports = {
     },
     getProductsByCategory: (category) => {
         return new Promise(async (resolve, reject) => {
-            let products = await db.get().collection(collection.PRODUCT_COLLECTION).find({ category: category }).toArray()
-            resolve(products);
+            try {
+                let products = await db.get().collection(collection.PRODUCT_COLLECTION).find({ category: category }).toArray()
+                resolve(products);
+            } catch (error) {
+                reject(error)
+            }
         })
     },
     filterProducts: (filter, price) => {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             if (filter.length > 1) {
                 db.get().collection(collection.PRODUCT_COLLECTION).aggregate([
                     {
@@ -137,10 +162,13 @@ module.exports = {
         })
     },
     getProductDetails: (id) => {
-        return new Promise((resolve, reject) => {
-            db.get().collection(collection.PRODUCT_COLLECTION).findOne({ _id: objectid(id) }).then((product) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let product = await db.get().collection(collection.PRODUCT_COLLECTION).findOne({ _id: objectid(id) })
                 resolve(product)
-            })
+            } catch (error) {
+                reject(error)
+            }
         })
     },
     updateProduct: (prdtID, productDetails) => {
@@ -159,15 +187,20 @@ module.exports = {
 
                 }
             }).then((response) => {
-                resolve()
+                resolve(response)
+            }).catch((error) => {
+                reject(error)
             })
         })
     },
     deleteProduct: (prdtId) => {
-        return new Promise((resolve, reject) => {
-            db.get().collection(collection.PRODUCT_COLLECTION).deleteOne({ _id: objectid(prdtId) }).then((response) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let response = await db.get().collection(collection.PRODUCT_COLLECTION).deleteOne({ _id: objectid(prdtId) })
                 resolve(response)
-            })
+            } catch (error) {
+                reject(error)
+            }
         })
     }
 }

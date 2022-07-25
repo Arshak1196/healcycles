@@ -63,8 +63,9 @@
         </div>
     </div>
 </div>
+
 <!-- Sales Chart End -->
-{{!-- 
+
 
 <!-- Recent Sales Start -->
 <div class="container-fluid pt-4 px-4">
@@ -263,7 +264,7 @@
         </div>
     </div>
 </div>
-<!-- Widgets End --> --}}
+<!-- Widgets End -->
 
 
 <!-- Footer Start -->
@@ -322,7 +323,7 @@
         data: {
             labels: ['Placed', 'Shipped', 'Delivered', 'Cancelled',],
             datasets: [{
-                label: 'Order',
+                label: 'Placed',
                 data: [{{count.placed}},{{count.shipped}},{{count.order}},{{count.canceled}}],
             backgroundColor: [
                 'rgba(255, 206, 86, 1)',

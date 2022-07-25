@@ -31,7 +31,7 @@
                                     <img src="/product-images/{{this.product._id}}0.jpg" alt="Image" class="img-fluid">
                                 </td>
                                 <td class="product-name">
-                                    <h2 class="h5 text-black" >{{this.product.name}}</h2>
+                                    <h2 class="h5 text-black">{{this.product.name}}</h2>
                                 </td>
                                 <td id="prdtPrice">₹ {{this.product.price}}</td>
                                 <td>
@@ -64,7 +64,7 @@
                         <img src="https://i.pinimg.com/originals/2e/ac/fa/2eacfa305d7715bdcd86bb4956209038.png" alt="">
                         <div class="col-md-6">
                             <a class="btn btn-outline-primary btn-sm btn-block pt-3" href="/shopAll">Continue
-                                    Shopping</a>
+                                Shopping</a>
                         </div>
                     </div>
                     {{/if}}
@@ -75,8 +75,8 @@
 
         <div class="row">
             <div class="col-md-6">
-                
-               
+
+
             </div>
             <div class="col-md-6 pl-5">
                 <div class="row justify-content-end">
@@ -86,7 +86,7 @@
                                 <h3 class="text-black h4 text-uppercase">Cart Totals</h3>
                             </div>
                         </div>
-                        
+
                         <div class="row mb-5">
                             <div class="col-md-6">
                                 <span class="text-black">Total Amount</span>
@@ -110,48 +110,71 @@
 </div>
 
 <script>
-    function changeQuantity(cartId, prdtId, usrId,price,stock, count) {
+    function changeQuantity(cartId, prdtId, usrId, price, stock, count) {
         let quantity = parseInt(document.getElementById(prdtId).innerHTML)
         count = parseInt(count)
         price = parseFloat(price)
         stock = parseInt(stock)
-        console.log(quantity+""+count+""+stock)
-        if((quantity+count)<=stock){
+        console.log(quantity + "" + count + "" + stock)
+        if ((quantity + count) <= stock) {
             $.ajax({
-            url: '/change-product-quantity',
-            data: {
-                cart: cartId,
-                product: prdtId,
-                user: usrId,
-                count: count,
-                quantity: quantity
-            },
-            method: 'post',
-            success: (response) => {
-                if (response.status) {
-                    document.getElementById(prdtId).innerHTML = quantity + count
-                    document.getElementById('total').innerHTML = response.total
-                    document.getElementById(0+prdtId).innerHTML=(quantity+count)*price
+                url: '/change-product-quantity',
+                data: {
+                    cart: cartId,
+                    product: prdtId,
+                    user: usrId,
+                    count: count,
+                    quantity: quantity
+                },
+                method: 'post',
+                success: (response) => {
+                    if (response.status) {
+                        document.getElementById(prdtId).innerHTML = quantity + count
+                        document.getElementById('total').innerHTML = response.total
+                        document.getElementById(0 + prdtId).innerHTML = (quantity + count) * price
+                    }
                 }
-            }
-        })
-        }else{
-            alert("No more Stock")
+            })
+        } else {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'bottom',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+              })
+              Toast.fire({
+                icon: 'warning',
+                title: 'No more stock'
+              })
         }
     }
     function deleteCartProduct(cartId, prdtId) {
-        $.ajax({
-            url: '/delete-cart-item',
-            data: {
-                cart: cartId,
-                product: prdtId
-            },
-            method: 'post',
-            success: (response) => {
-                if (response.status) {
-                    alert("Product Removed from the cart")
-                    location.reload()
-                }
+        Swal.fire({
+            text: "Do you need to remove the product from cart",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/delete-cart-item',
+                    data: {
+                        cart: cartId,
+                        product: prdtId
+                    },
+                    method: 'post',
+                    success: (response) => {
+                        if (response.status) {
+                            location.reload()
+                        }
+                    }
+                })
             }
         })
     }

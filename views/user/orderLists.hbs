@@ -65,6 +65,10 @@
                                 <td class="text-capitalize">{{../this.paymentMethod}} : {{../this.status}} </td>
                                 <td>{{this.orderStatus}}
                                     {{#if this.iscanceled}}
+                                    {{#if this.invoice}}
+                                    <a type="button" href="/invoice/{{../this._id}}/{{this.item}}" 
+                                        class="btn-sm btn-outline-info">Invoice</a>
+                                    {{/if}}
                                     {{else}}
                                     <button type="button" onclick="cancelOrder('{{../this._id}}','{{this.item}}')"
                                         class="btn-sm btn-outline-danger ">Cancel Order</button>
@@ -121,13 +125,10 @@
                     url: '/cancel_order/' + odrId + '/' + itemId,
                     method: 'get',
                     success: (response) => {
-                        alert('order canceled')
                         location.reload()
                     }
                 })
             }
         })
-
-
     }
 </script>

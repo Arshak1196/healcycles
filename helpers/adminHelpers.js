@@ -6,38 +6,50 @@ const objectid = require('mongodb').ObjectId
 module.exports = {
     doLogin: (adminData) => {
         return new Promise(async (resolve, reject) => {
-            let response = {}
-            let admin = await db.get().collection(collection.ADMIN_COLLECTION).findOne({ email: adminData.email })
-            if (admin) {
-                bcrypt.compare(adminData.password, admin.password).then((status) => {
-                    if (status) {
-                        response.admin = admin;
-                        response.status = true;
-                        resolve(response);
-                    } else {
-                        resolve({ status: false })
-                    }
-                })
-            } else {
-                resolve({ status: false })
+            try {
+                let response = {}
+                let admin = await db.get().collection(collection.ADMIN_COLLECTION).findOne({ email: adminData.email })
+                if (admin) {
+                    bcrypt.compare(adminData.password, admin.password).then((status) => {
+                        if (status) {
+                            response.admin = admin;
+                            response.status = true;
+                            resolve(response);
+                        } else {
+                            resolve({ status: false })
+                        }
+                    })
+                } else {
+                    resolve({ status: false })
+                }
+            } catch (error) {
+                reject(error)
             }
         })
     },
     doMessage: (message) => {
-        return new Promise(async (resolve) => {
-            let response = await db.get().collection(collection.ADMIN_COLLECTION).updateOne({}, {
-                $push: {
-                    messages: message
-                }
-            })
-            resolve(response)
+        return new Promise(async (resolve, reject) => {
+            try {
+                let response = await db.get().collection(collection.ADMIN_COLLECTION).updateOne({}, {
+                    $push: {
+                        messages: message
+                    }
+                })
+                resolve(response)
+            } catch (error) {
+                reject(error)
+            }
         })
     },
     getUsersCount: () => {
         return new Promise(async (resolve, reject) => {
             try {
                 let userCount = await db.get().collection(collection.USER_COLLECTION).count()
-                resolve(userCount)
+                if (userCount) {
+                    resolve(userCount)
+                } else {
+                    resolve(userCount = 0)
+                }
             } catch (error) {
                 reject(error)
             }
@@ -46,8 +58,12 @@ module.exports = {
     getProductsCount: () => {
         return new Promise(async (resolve, reject) => {
             try {
-                let userCount = await db.get().collection(collection.PRODUCT_COLLECTION).count()
-                resolve(userCount)
+                let productsCount = await db.get().collection(collection.PRODUCT_COLLECTION).count()
+                if (productsCount) {
+                    resolve(productsCount)
+                } else {
+                    resolve(productsCount = 0)
+                }
             } catch (error) {
                 reject(error)
             }
@@ -154,22 +170,30 @@ module.exports = {
         })
     },
     getTotalSales: () => {
-        return new Promise(async (resolve) => {
-            let sales = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-                {
-                    $unwind: '$products'
-                },
-                {
-                    $match: { 'products.orderStatus': 'Delivered', 'status': 'placed' }
-                },
-                {
-                    $group: {
-                        _id: null,
-                        total: { $sum: '$totalAmount' }
+        return new Promise(async (resolve, reject) => {
+            try {
+                let sales = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                    {
+                        $unwind: '$products'
+                    },
+                    {
+                        $match: { 'products.orderStatus': 'Delivered', 'status': 'placed' }
+                    },
+                    {
+                        $group: {
+                            _id: null,
+                            total: { $sum: '$totalAmount' }
+                        }
                     }
+                ]).toArray()
+                if (sales[0]) {
+                    resolve(sales[0].total)
+                } else {
+                    resolve(sales = 0)
                 }
-            ]).toArray()
-            resolve(sales[0].total)
+            } catch (error) {
+                reject(error)
+            }
         })
     },
     getCODsales: () => {
@@ -247,36 +271,48 @@ module.exports = {
         })
     },
     getAllbanners: () => {
-        return new Promise(async (resolve) => {
-            let banners = await db.get().collection(collection.BANNER_COLLECTION).find().toArray()
-            resolve(banners)
+        return new Promise(async (resolve, reject) => {
+            try {
+                let banners = await db.get().collection(collection.BANNER_COLLECTION).find().toArray()
+                resolve(banners)
+            } catch (error) {
+                reject(error)
+            }
         })
     },
     activateBanner: (bannerId) => {
-        return new Promise(async (resolve) => {
-            db.get().collection(collection.BANNER_COLLECTION).updateMany({}, {
-                $set: {
-                    active: false
-                }
-            })
-            let banner = await db.get().collection(collection.BANNER_COLLECTION).
-                updateOne({ _id: objectid(bannerId) }, {
-                    $set: {
-                        active: true
-                    }
-                })
-            resolve(banner)
-        })
-    },
-    deActivateBanner: (bannerId) => {
-        return new Promise(async (resolve) => {
-            let banner = await db.get().collection(collection.BANNER_COLLECTION).
-                updateOne({ _id: objectid(bannerId) }, {
+        return new Promise(async (resolve, reject) => {
+            try {
+                db.get().collection(collection.BANNER_COLLECTION).updateMany({}, {
                     $set: {
                         active: false
                     }
                 })
-            resolve(banner)
+                let banner = await db.get().collection(collection.BANNER_COLLECTION).
+                    updateOne({ _id: objectid(bannerId) }, {
+                        $set: {
+                            active: true
+                        }
+                    })
+                resolve(banner)
+            } catch (error) {
+                reject(error)
+            }
+        })
+    },
+    deActivateBanner: (bannerId) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let banner = await db.get().collection(collection.BANNER_COLLECTION).
+                    updateOne({ _id: objectid(bannerId) }, {
+                        $set: {
+                            active: false
+                        }
+                    })
+                resolve(banner)
+            } catch (error) {
+                reject(error)
+            }
         })
     },
     getBanner: () => {
@@ -290,37 +326,48 @@ module.exports = {
         })
     },
     deleteBanner: (bannerId) => {
-        return new Promise(async (resolve) => {
-            let response = await db.get().collection(collection.BANNER_COLLECTION).deleteOne({ _id: objectid(bannerId) })
-            resolve(response)
+        return new Promise(async (resolve, reject) => {
+            try {
+                let response = await db.get().collection(collection.BANNER_COLLECTION).deleteOne({ _id: objectid(bannerId) })
+                resolve(response)
+            } catch (error) {
+                reject(error)
+            }
         })
     },
     getAllOrders: () => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.ORDER_COLLECTION).find().sort({ _id: -1 }).toArray().then((response) => {
                 resolve(response)
+            }).catch((error) => {
+                reject(error)
             })
         })
     },
     changeOrderDelivery: (data) => {
-        return new Promise(async (resolve) => {
-            if (data.deliveryStatus == 'Delivered' || data.deliveryStatus == 'Order Canceled') {
-                let response = await db.get().collection(collection.ORDER_COLLECTION)
-                    .updateOne({ _id: objectid(data.orderId), 'products.item': objectid(data.itemId) }, {
-                        $set: {
-                            'products.$.orderStatus': data.deliveryStatus,
-                            'products.$.iscanceled': true
-                        }
-                    })
-                resolve(response)
-            } else {
-                let response = await db.get().collection(collection.ORDER_COLLECTION)
-                    .updateOne({ _id: objectid(data.orderId), 'products.item': objectid(data.itemId) }, {
-                        $set: {
-                            'products.$.orderStatus': data.deliveryStatus,
-                        }
-                    })
-                resolve(response)
+        return new Promise(async (resolve, reject) => {
+            try {
+                if (data.deliveryStatus == 'Delivered' || data.deliveryStatus == 'Order Canceled') {
+                    let response = await db.get().collection(collection.ORDER_COLLECTION)
+                        .updateOne({ _id: objectid(data.orderId), 'products.item': objectid(data.itemId) }, {
+                            $set: {
+                                'products.$.orderStatus': data.deliveryStatus,
+                                'products.$.iscanceled': true,
+                                'products.$.invoice':true
+                            }
+                        })
+                    resolve(response)
+                } else {
+                    let response = await db.get().collection(collection.ORDER_COLLECTION)
+                        .updateOne({ _id: objectid(data.orderId), 'products.item': objectid(data.itemId) }, {
+                            $set: {
+                                'products.$.orderStatus': data.deliveryStatus,
+                            }
+                        })
+                    resolve(response)
+                }
+            } catch (error) {
+                reject(error)
             }
         })
     },

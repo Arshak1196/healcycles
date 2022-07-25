@@ -1,0 +1,127 @@
+<section style="min-height: 75vh;">
+    <div class="bg-light py-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 mb-0"><a href="/">Home</a><span class="mx-2 mb-0">/</span> <strong
+                        class="text-black">Invoice</strong></div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="">
+            <!-- BEGIN INVOICE -->
+            <div class="col-xs-12 shadow" >
+                <div class="grid invoice" id="invce">
+                    <div class="grid-body ">
+                        {{#each invoice}}
+                        <div class="invoice-title">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h2 class="text-dark">HEAL CYCLES</h2>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h2 class="text-dark">Invoice</h2>
+                                    <p>{{this._id}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <address>
+                                <strong>Shipped To:</strong><br>
+                                {{deliveryDetails.name}}<br>
+                                {{deliveryDetails.address1}}<br>
+                                {{deliveryDetails.address2}}<br>
+                                {{deliveryDetails.pincode}}<br>
+                                {{deliveryDetails.state}},{{deliveryDetails.country}}<br>
+                                <abbr title="Phone">Ph:</abbr> {{deliveryDetails.mobile}}<br>
+                                <abbr title="Phone">email:</abbr> {{deliveryDetails.email}}
+                            </address>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <address>
+                                <strong>Payment Method:</strong><br>
+                                {{this.paymentMethod}}<br>
+                            </address>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                            <address>
+                                <strong>Order Date:</strong><br>
+                                {{this.date}}
+                            </address>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>ORDER SUMMARY</h3>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr class="line">
+                                        <td><strong>#</strong></td>
+                                        <td class="text-center"><strong>ITEM</strong></td>
+                                        <td class="text-center"><strong>QUANTITY</strong></td>
+                                        <td class="text-right"><strong>RATE</strong></td>
+                                        <td class="text-right"><strong>SUBTOTAL</strong></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td><strong>{{this.products.product.name}}</strong>
+                                            <p>{{this.products.product.company}}</p>
+                                        </td>
+                                        <td class="text-center">{{this.products.quantity}}</td>
+                                        <td class="text-center">₹ {{this.products.product.price}}.00</td>
+                                        <td class="text-right">₹ {{this.products.totalPrice}}.00</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="3">
+                                        </td>
+                                        <td class="text-right"><strong>Total</strong></td>
+                                        <td class="text-right "><strong class="fw-bolder"> ₹
+                                                {{this.products.totalPrice}}.00</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-right identity">
+                            <p>Approved By<br><strong>Heal Cycles</strong></p>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        <!-- END INVOICE -->
+        {{!-- <div class="text-right">
+            <button class="btn btn-primary" onclick="downloadInvoice()">
+                Download Invoice
+            </button>
+        </div> --}}
+    </div>
+    </div>
+</section>
+
+<script>
+
+    function downloadInvoice() {
+        var element = document.getElementById('invce');
+        var opt = {
+            margin: 1,
+            filename: 'invoice.pdf',
+            html2canvas: {scale:2},
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+        // New Promise-based usage:
+        html2pdf().set(opt).from(element).save();
+    }
+</script>

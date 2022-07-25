@@ -4,9 +4,8 @@ const userHelper = require('../helpers/user-helpers');
 const twilioHelper = require('../helpers/twilioHelpers');
 const productHelper = require('../helpers/productHelpers');
 const userHelpers = require('../helpers/user-helpers');
-const { response } = require('express');
-const async = require('hbs/lib/async');
 const adminHelpers = require('../helpers/adminHelpers');
+const async = require('hbs/lib/async');
 const verifyLogin = (req, res, next) => {
   if (req.session.userLoggedIn) {
     next()
@@ -481,6 +480,23 @@ router.get('/order_lists', verifyLogin, async (req, res, next) => {
 router.get('/cancel_order/:odrId/:itemId', verifyLogin, async (req, res) => {
   let response = await userHelper.cancelOrder(req.params)
   res.json(response)
+})
+
+router.get('/invoice/:odrId/:itemId', verifyLogin, async (req, res, next) => {
+  try {
+    let user=req.session.user;
+    let count = {};
+    const countData = await Promise.all([
+      userHelper.getCartCount(user._id),
+      userHelper.getWishlistCount(user._id),
+      userHelper.getOrderDetails(req.params)
+    ])
+    count = { cartCount: countData[0], wishlistCount: countData[1] }
+    invoice=countData[2];
+    res.render('user/invoice', { invoice, user,count,layout: 'user-layout' })
+  } catch (error) {
+    next(error)
+  }
 })
 
 //logout
