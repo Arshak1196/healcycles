@@ -54,7 +54,7 @@ router.get('/home', verifyLogin, async (req, res, next) => {
       adminHelper.getOnlineSales(),
       adminHelper.getPlacedOrdersCount(),
       adminHelper.getShippedOrdersCount(),
-      adminHelper.getCanceledOrders()
+      adminHelper.getCanceledOrders(),
     ])
     const count = {
       user: allData[0], product: allData[1], order: allData[2], sales: allData[3],

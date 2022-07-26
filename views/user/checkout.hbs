@@ -41,49 +41,49 @@
             <div class="form-group row">
               <div class="col-md-6">
                 <label for="c_fname" class="text-black">First Name <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="first" name="fname">
+                <input type="text" class="form-control" id="first" name="fname" required>
               </div>
               <div class="col-md-6">
                 <label for="c_lname" class="text-black">Last Name <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="last" name="lname">
+                <input type="text" class="form-control" id="last" name="lname" required>
               </div>
             </div>
 
             <div class="form-group row">
               <div class="col-md-12">
                 <label for="c_address" class="text-black">Address <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="add1" name="address1" placeholder="Street address">
+                <input type="text" class="form-control" id="add1" name="address1" placeholder="Street address" required>
               </div>
             </div>
 
             <div class="form-group">
               <input type="text" class="form-control" id="add2" name="address2"
-                placeholder="Apartment, suite, unit etc. (optional)">
+                placeholder="Apartment, suite, unit etc. (optional)" required>
             </div>
 
             <div class="form-group row">
               <div class="col-md-6">
                 <label for="state_country" class="text-black">State<span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="ste" name="state">
+                <input type="text" class="form-control" id="ste" name="state" required>
               </div>
               <div class="col-md-6">
                 <label for="state_country" class="text-black">Country <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="country" name="country">
+                <input type="text" class="form-control" id="country" name="country" required>
               </div>
               <div class="col-md-6">
                 <label for="c_postal_zip" class="text-black">Pin Code<span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="pin" name="pin_code">
+                <input type="text" class="form-control" id="pin" name="pin_code" required>
               </div>
             </div>
 
             <div class="form-group row mb-5">
               <div class="col-md-6">
                 <label for="c_email_address" class="text-black">Email Address <span class="text-danger">*</span></label>
-                <input type="email" class="form-control" id="mail" name="email">
+                <input type="email" class="form-control" id="mail" name="email" required>
               </div>
               <div class="col-md-6">
                 <label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
-                <input type="number" class="form-control" id="phone" name="phone" placeholder="Phone Number">
+                <input type="number" class="form-control" id="phone" name="phone" placeholder="Phone Number" required>
               </div>
             </div>
             <input type="text" name="usrId" value="{{user._id}}" hidden>
