@@ -19,7 +19,13 @@ const dotenv = require('dotenv')
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-app.engine('hbs', hbs.engine({ extname: 'hbs', defaultLayout: 'admin-layout', layoutsDir: __dirname + '/views/layouts/', partialsDir: __dirname + '/views/partials/' }));
+app.engine('hbs', hbs.engine({
+  helpers:{
+    inc:(value)=>{
+      return parseInt(value)+1
+    }
+  },
+  extname: 'hbs', defaultLayout: 'admin-layout', layoutsDir: __dirname + '/views/layouts/', partialsDir: __dirname + '/views/partials/' }));
 
 app.use(logger('dev'));
 app.use(express.json());

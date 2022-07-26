@@ -54,7 +54,7 @@
                 <tbody>
                     {{#each banners}}
                     <tr>
-                        <th class="text-dark" scope="row">{{@index}}</th>
+                        <th class="text-dark" scope="row">{{inc @index}}</th>
                         <td class="text-dark">{{this.heading}}</td>
                         <td class="text-dark">{{this.subHeading}}</td>
                         <td class="text-dark"><img src="/banners/{{this._id}}.png" alt="" style="width: 80px; height: 50px;"></td>

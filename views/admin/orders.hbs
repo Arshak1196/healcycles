@@ -7,7 +7,6 @@
             <table class="table" id="productTable">
                 <thead>
                     <tr>
-                        <th scope="col" class="text-dark">#</th>
                         <th scope="col" class="text-dark">Orderes Items</th>
                         <th scope="col" class="text-dark">Delivery Details</th>
                         <th scope="col" class="text-dark">Total Amount</th>
@@ -22,7 +21,6 @@
                     {{#each orders}}
                     {{#each products}}
                     <tr>
-                        <th class="text-dark" scope="row">{{@index}}</th>
 
                         <td class="text-dark">
                             <p class=" text-lowercase">{{this.product.name}} x {{this.quantity}}</p>

@@ -23,7 +23,7 @@
                 <tbody>
                     {{#each products}}
                     <tr>
-                        <th class="text-white" scope="row">{{@index}}</th>
+                        <th class="text-white" scope="row">{{inc @index}}</th>
                         <td class="text-white">{{this.name}}</td>
                         <td class="text-white">{{this.category}}</td>
                         <td class="text-white">{{this.price}}</td>
