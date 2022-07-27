@@ -45,6 +45,7 @@ module.exports = {
     addProduct: (product, callback) => {
         product.price = +product.price;
         product.stock = +product.stock
+        product.wishList=[]
         db.get().collection('product').insertOne(product).then((data) => {
             callback(data.insertedId)
         })
@@ -109,7 +110,12 @@ module.exports = {
                         $limit: 3
                     }
                 ]).toArray()
+                console.log(products)
+                if(products){
                 resolve(products)
+                }else{
+                    resolve()
+                }
             } catch (error) {
                 reject(error)
             }
